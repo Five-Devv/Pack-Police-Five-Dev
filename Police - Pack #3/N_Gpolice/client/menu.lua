@@ -66,7 +66,7 @@ end
     Citizen.CreateThread(function()
         while open do
             RageUI.IsVisible(RMenu:Get('police', 'LSPD'), function()
-                RageUI.Item.Separator("↓ Véhicule de la Police Nationale ↓")
+                RageUI.Item.Separator("↓ Véhicule de la Police ↓")
                 for k,v in pairs(config.garage.vehs) do
                     RageUI.Item.Button(v.label, nil, { nil }, 5, {
                         onHovered = function()
