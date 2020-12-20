@@ -1,16 +1,6 @@
 # Pack-Police-Five-Dev
 
 Five-Dev : https://discord.gg/pRXCnA8
-
-
-
-# Ressources #
-
-ensure breze_mrpd
-ensure vehiclespolice
-ensure e_policejob
-ensure esx_policedog
-ensure N_Gpolice
 _____________
 
 Pack police fait par enøs#0001 |
