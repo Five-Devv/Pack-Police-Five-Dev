@@ -4,22 +4,13 @@ Five-Dev : https://discord.gg/pRXCnA8
 
 
 
-# Mapping
+# Ressources #
 
 ensure breze_mrpd
-
-# Véhicules
-
 ensure vehiclespolice
-
-# Scripts
-
 ensure e_policejob
 ensure esx_policedog
 ensure N_Gpolice
-
-
-
 _____________
 
 Pack police fait par enøs#0001 |
