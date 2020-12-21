@@ -42,7 +42,7 @@ function OpenBillingMenu()
 			local playerPed        = GetPlayerPed(-1)
 			TaskStartScenarioInPlace(playerPed, 'CODE_HUMAN_MEDIC_TIME_OF_DEATH', 0, true)
 			Citizen.Wait(5000)
-			  TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(player), 'society_police', ('police'), amount)
+			  TriggerServerEvent('esx_billing:sendBill1', GetPlayerServerId(player), 'society_police', ('police'), amount)
 			  Citizen.Wait(100)
 			  ESX.ShowNotification("~r~Vous avez bien envoyer la facture")
 		  end
