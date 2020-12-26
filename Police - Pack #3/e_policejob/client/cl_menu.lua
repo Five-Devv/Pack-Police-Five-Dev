@@ -825,6 +825,66 @@ AddEventHandler('esx_policejob:OutVehicle', function()
 	TaskLeaveVehicle(playerPed, vehicle, 16)
 end)
 
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(0)
+		local playerPed = PlayerPedId()
+
+		if IsHandcuffed then
+			DisableControlAction(0, 1, true) -- Disable pan
+			DisableControlAction(0, 2, true) -- Disable tilt
+			DisableControlAction(0, 24, true) -- Attack
+			DisableControlAction(0, 257, true) -- Attack 2
+			DisableControlAction(0, 25, true) -- Aim
+			DisableControlAction(0, 263, true) -- Melee Attack 1
+			DisableControlAction(0, 32, true) -- W
+			DisableControlAction(0, 34, true) -- A
+			DisableControlAction(0, 31, true) -- S
+			DisableControlAction(0, 30, true) -- D
+
+			DisableControlAction(0, 45, true) -- Reload
+			DisableControlAction(0, 22, true) -- Jump
+			DisableControlAction(0, 44, true) -- Cover
+			DisableControlAction(0, 37, true) -- Select Weapon
+			DisableControlAction(0, 23, true) -- Also 'enter'?
+
+			DisableControlAction(0, 288,  true) -- Disable phone
+			DisableControlAction(0, 289, true) -- Inventory
+			DisableControlAction(0, 170, true) -- Animations
+			DisableControlAction(0, 167, true) -- Job
+
+			DisableControlAction(0, 0, true) -- Disable changing view
+			DisableControlAction(0, 26, true) -- Disable looking behind
+			DisableControlAction(0, 73, true) -- Disable clearing animation
+			DisableControlAction(2, 199, true) -- Disable pause screen
+
+			DisableControlAction(0, 59, true) -- Disable steering in vehicle
+			DisableControlAction(0, 71, true) -- Disable driving forward in vehicle
+			DisableControlAction(0, 72, true) -- Disable reversing in vehicle
+
+			DisableControlAction(2, 36, true) -- Disable going stealth
+
+			DisableControlAction(0, 47, true)  -- Disable weapon
+			DisableControlAction(0, 264, true) -- Disable melee
+			DisableControlAction(0, 257, true) -- Disable melee
+			DisableControlAction(0, 140, true) -- Disable melee
+			DisableControlAction(0, 141, true) -- Disable melee
+			DisableControlAction(0, 142, true) -- Disable melee
+			DisableControlAction(0, 143, true) -- Disable melee
+			DisableControlAction(0, 75, true)  -- Disable exit vehicle
+			DisableControlAction(27, 75, true) -- Disable exit vehicle
+
+			if IsEntityPlayingAnim(playerPed, 'mp_arresting', 'idle', 3) ~= 1 then
+				ESX.Streaming.RequestAnimDict('mp_arresting', function()
+					TaskPlayAnim(playerPed, 'mp_arresting', 'idle', 8.0, -8, -1, 49, 0.0, false, false, false)
+				end)
+			end
+		else
+			Citizen.Wait(500)
+		end
+	end
+end)
+
 AddEventHandler('playerSpawned', function(spawn)
 	isDead = false
 	TriggerEvent('esx_policejob:unrestrain')
@@ -867,6 +927,43 @@ function StartHandcuffTimer()
 		TriggerEvent('esx_policejob:unrestrain')
 		handcuffTimer.active = false
 	end)
+end
+
+-- TODO
+--   - return to garage if owned
+--   - message owner that his vehicle has been impounded
+function ImpoundVehicle(vehicle)
+	local playerPed = PlayerPedId()
+	local vehicle   = ESX.Game.GetVehicleInDirection()
+	if IsPedInAnyVehicle(playerPed, true) then
+	    vehicle = GetVehiclePedIsIn(playerPed, false)
+	end
+	local entity = vehicle
+	carModel = GetEntityModel(entity)
+	carName = GetDisplayNameFromVehicleModel(carModel)
+	NetworkRequestControlOfEntity(entity)
+	
+	local timeout = 2000
+	while timeout > 0 and not NetworkHasControlOfEntity(entity) do
+	    Wait(100)
+	    timeout = timeout - 100
+	end
+ 
+	SetEntityAsMissionEntity(entity, true, true)
+	
+	local timeout = 2000
+	while timeout > 0 and not IsEntityAMissionEntity(entity) do
+	    Wait(100)
+	    timeout = timeout - 100
+	end
+ 
+	Citizen.InvokeNative( 0xEA386986E786A54F, Citizen.PointerValueIntInitialized( entity ) )
+	
+	if (DoesEntityExist(entity)) then 
+	    DeleteEntity(entity)
+	end 
+	ESX.ShowNotification(_U('impound_successful'))
+	currentTask.busy = false
 end
 
 RegisterNetEvent('renfort:setBlip')
