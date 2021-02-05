@@ -45,7 +45,7 @@ AddEventHandler('policejob:mettrelesmenottes', function(playerheading, playercoo
 	TaskPlayAnim(GetPlayerPed(-1), 'mp_arrest_paired', 'crook_p2_back_right', 8.0, -8, 3750 , 2, 0, 0, 0, 0)
 	Wait(3760)
 	IsHandcuffed = true
-	TriggerEvent('jek_policejob:handcuff')
+	TriggerEvent('esx_policejob:handcuff')
 	LoadAnimDict('mp_arresting')
 	TaskPlayAnim(GetPlayerPed(-1), 'mp_arresting', 'idle', 8.0, -8, -1, 49, 0.0, false, false, false)
 end)
@@ -71,7 +71,7 @@ AddEventHandler('policejob:enlevermenoottes', function(playerheading, playercoor
 	TaskPlayAnim(GetPlayerPed(-1), 'mp_arresting', 'b_uncuff', 8.0, -8,-1, 2, 0, 0, 0, 0)
 	Wait(5500)
 	IsHandcuffed = false
-	TriggerEvent('jek_policejob:handcuff')
+	TriggerEvent('esx_policejob:handcuff')
 	ClearPedTasks(GetPlayerPed(-1))
 	FreezeEntityPosition(playerPed, false)
 end)
